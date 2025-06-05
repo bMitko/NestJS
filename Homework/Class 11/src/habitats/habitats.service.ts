@@ -36,12 +36,13 @@ export class HabitatsService {
     }
 
     async update(id: string, body: HabitatUpdateDto): Promise<Habitat> {
+        const habitat = await this.findOne(id);
 
-        const updatedHabitat = await this.findOne(id);
+        Object.assign(habitat, body);
 
-        Object.assign(updatedHabitat, body);
+        await this.habitatRepository.save(habitat);
 
-        await this.habitatRepository.save(updatedHabitat);
+        const updatedHabitat = await this.findOne(id); 
 
         return updatedHabitat;
     }
@@ -51,6 +52,10 @@ export class HabitatsService {
 
         if(!deletedHabitat) {
             throw new BadRequestException (`You can't delete habitat that doesn't exist`)
+        }
+
+        if(deletedHabitat.creatures.length !== 0) {
+            throw new BadRequestException (`You can't delete this habitat because it has ${deletedHabitat.creatures.length} creatures in it.`)
         }
 
         await this.habitatRepository.softDelete(id)

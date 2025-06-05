@@ -13,6 +13,7 @@ export class HabitatUpdateDto {
 
     @IsString()
     @IsNotEmpty()
+    @IsOptional()
     @ApiPropertyOptional({
         type: String,
         example: 'Ashara'
@@ -21,6 +22,7 @@ export class HabitatUpdateDto {
 
     @IsString()
     @IsNotEmpty()
+    @IsOptional()
     @ApiPropertyOptional({
         type: String,
         example: 'Sandy'
